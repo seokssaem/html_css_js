@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS 위치 속성</title>
+
+    <style>
+       p {
+        width: 500px;
+        height: 200px;
+        background-color: #eee;
+        border: 1px solid #ccc;
+        line-height: 2;
+       }
+       #static {
+        position: static;
+       }
+       #relative-1 {
+        position: relative;
+       }
+       #relative-2 {
+        position: relative;
+        left: 100px;
+        top: -50px;
+       }
+       #fixed {
+        width: 100px;
+        height: 100px;
+        background-color: #222;
+        position: fixed;
+        right: 30px;
+        top: 30px;
+       }
+    </style>
+
+</head>
+<body>
+    <p id="static">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium impedit accusantium maiores pariatur? Dignissimos assumenda consequatur ad qui facilis. Nostrum, sunt d</p>
+    <p id="relative-1">Lor   em ipsum do  lor sit amet consectetur adipisicing elit. Doloremque atque reiciendis quae expedita nihil! Error quis libero aliquam excepturi odit saepe autem numquam. Illum assumenda, quia vitae qui iure nulla.</p>
+    <p id="relative-2">consectetur adipisicing elit. Provident expedita doloremque consequuntur praesentium soluta nihil. Tempore incidunt rem odit provident, culpa quas aspernatur voluptatem impedit vel fugit commodi exercitationem eligendi?</p>
+    <p id="fixed"></p>
+</body>
+</html>
