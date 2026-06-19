@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대구 미세먼지 현황 대시보드</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <header>
+        <!-- 시맨틱 태그 : 제목 영역 -->
+        <h1>대구광역시 미세먼지 현황</h1>
+        <p>공공데이터포털 대기질 정보 API | 기준일 : 2026-06-19</p>
+    </header>
+
+    <main>
+        <!-- 시맨틱 태그 : 메인 영역 -->
+        
+        <section>
+            <!-- 시맨틱 태그 : 통계 카드 영역 -->
+            <h2>핵심 통계</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-label">PM10 평균</span>
+                    <span class="stat-value" id="avg">-</span>
+                    <span class="stat-unit">㎍/㎥</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">PM10 최대</span>
+                    <span class="stat-value" id="max">-</span>
+                    <span class="stat-unit">㎍/㎥</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">PM10 최소</span>
+                    <span class="stat-value" id="min">-</span>
+                    <span class="stat-unit">㎍/㎥</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">PM2.5 평균</span>
+                    <span class="stat-value" id="avg25">-</span>
+                    <span class="stat-unit">㎍/㎥</span>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <!-- 시맨틱 태그 : 데이터 시각화(차트) 영역 -->
+            <h2>데이터 시각화</h2>
+            <div class="charts-wrap">
+                <!-- 막대 차트 -->
+                <div class="chart-card">
+                    <h3>구별 PM10 농도 (막대 차트)</h3>
+                    <p class="chart-desc">
+                        대구광역시 8개 구,군 미세먼지(PM10) 수치 (단위:㎍/㎥)
+                    </p>
+                    <canvas id="barChart"></canvas>
+                </div>
+
+                <!-- 선 차트 -->
+                <div class="chart-card">
+                    <h3>시간대별 PM2.5 변화 (선 차트)</h3>
+                    <p class="chart-desc">
+                        대구광역시 평균 초미세먼지 변화 (단위:㎍/㎥)
+                    </p>
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <!-- 시맨틱 태그 : 미세먼지 등급기준 영역 -->
+            <h2>미세먼지 등급 기준 (PM10)</h2>
+            <div class="grade-wrap">
+                <div class="grade-card grade-best">좋음<br>0 ~ 30</div>
+                <div class="grade-card grade-normal">보통<br>31 ~ 80</div>
+                <div class="grade-card grade-bad">나쁨<br>81 ~ 150</div>
+                <div class="grade-card grade-worst">매우나쁨<br>151 이상</div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <!-- 시맨틱 태그 : 푸터(출처, 회사소개 등) 영역 -->
+        <p>데이터 출처: <a href="https://data.go.kr" target="_blank">
+            공공데이터포털 (data.go.kr)</a> - 한국환경공단 에어코리아 대기질 정보</p>
+    </footer>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+        /* ===== 데이터 (공공데이터포털 에어코리아 API 샘플) ===== */
+
+        const districts = ['중구', '동구', '서구', '남구', '북구', '수성구', '달서구', '달성군'];
+        const pm10 = [48, 55, 43, 39, 62, 51, 58, 34];
+        const pm25 = [26, 31, 24, 22, 35, 28, 33, 19];
+
+        const hours = ['00시','02시','04시','06시','08시','10시','12시','14시','16시','18시','20시','22시'];
+        const pm25Time = [18, 16, 15, 17, 26, 30, 28, 25, 23, 21, 20, 19];
+
+        /* ===== 통계 계산 ===== */
+        const sum = pm10.reduce((a, b) => a + b, 0);
+        const avg = Math.round(sum / pm10.length);
+        const max = Math.max(...pm10);
+        const min = Math.min(...pm10);
+        const avg25 = Math.round(pm25.reduce((a, b) => a + b, 0) / pm25.length);
+
+        document.getElementById('avg').textContent = avg;
+        document.getElementById('max').textContent = max;
+        document.getElementById('min').textContent = min;
+        document.getElementById('avg25').textContent = avg25;
+
+        /* ===== 막대 차트 ===== */
+        new Chart(document.getElementById('barChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: districts,
+            datasets: [
+            {
+                label: 'PM10 (㎍/㎥)',
+                data: pm10,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgb(54, 162, 235)',
+                borderWidth: 1
+            },
+            {
+                label: 'PM2.5 (㎍/㎥)',
+                data: pm25,
+                backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                borderColor: 'rgb(255, 99, 132)',
+                borderWidth: 1
+            }
+            ]
+        },
+        options: {
+            scales: {
+            y: {
+                beginAtZero: true,
+                title: { display: true, text: '농도 (㎍/㎥)' }
+            }
+            }
+        }
+        });
+
+        /* ===== 선 차트 ===== */
+        new Chart(document.getElementById('lineChart').getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: hours,
+            datasets: [{
+            label: 'PM2.5 (㎍/㎥)',
+            data: pm25Time,
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.1)',
+            fill: true,
+            tension: 0.4
+            }]
+        },
+        options: {
+            scales: {
+            y: {
+                beginAtZero: false,
+                title: { display: true, text: '농도 (㎍/㎥)' }
+            }
+            }
+        }
+        });
+    
+    </script>      
+
+</body>
+</html>

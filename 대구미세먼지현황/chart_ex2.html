@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>선 차트 예제</title>
+</head>
+<body>
+    <h2>대구 시간대별 PM2.5 농도 변화</h2>
+    <div style="width: 600px; height:350px;">
+        <canvas id="lineChart"></canvas>
+    </div>
+
+
+
+    <script>
+        const ctx = document.getElementById('lineChart').getContext('2D');
+
+        new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['06시', '09시', '12시', '15시', '18시', '21시'],
+            datasets: [{
+            label: 'PM2.5 (㎍/㎥)',
+            data: [17, 26, 30, 25, 21, 19],
+            borderColor: 'rgb(255, 99, 132)',       // 선 색
+            backgroundColor: 'rgba(255, 99, 132, 0.1)', // 면 채우기 색
+            fill: true,      // 선 아래 영역 채우기 여부
+            tension: 0.4     // 선 곡률 (0 = 직선, 1 = 많이 굽음)
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+        }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS 함수 - var()</title>
+
+    <style>
+        :root {
+            --main-bg-color: #333;
+            --main-text-color: #fff;
+        }
+        body {
+            background-color: var(--main-bg-color);
+            color: var(--main-text-color);
+        }
+        .heading {
+            margin: auto;
+            background-color: rgb(6, 6, 138);
+            color: yellow;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 2px 2px 2px #000;
+        }
+        .heading h1 {
+            font-size: clamp(1rem, 2vw, 2rem);
+        }
+    </style>
+
+</head>
+<body>
+    <div class="heading">
+        <h1>CSS 함수</h1>
+    </div>
+</body>
+</html>

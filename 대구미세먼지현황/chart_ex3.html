@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>막대 차트 예제</title>
+</head>
+<body>
+
+  <h2>대구 구별 PM10 농도 (㎍/㎥)</h2>
+  <canvas id="barChart" width="600" height="350"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const ctx = document.getElementById('barChart').getContext('2d');
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['중구', '동구', '서구', '남구', '북구'],
+        datasets: [{
+          label: 'PM10 (㎍/㎥)',
+          data: [48, 55, 43, 39, 62],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.6)',
+            'rgba(255, 159, 64, 0.6)',
+            'rgba(255, 205, 86, 0.6)',
+            'rgba(75, 192, 192, 0.6)',
+            'rgba(54, 162, 235, 0.6)'
+          ],
+          borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true  // Y축을 0부터 시작
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
